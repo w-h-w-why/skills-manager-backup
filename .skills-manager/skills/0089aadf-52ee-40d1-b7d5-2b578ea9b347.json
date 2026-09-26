@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "0089aadf-52ee-40d1-b7d5-2b578ea9b347",
+  "path": "code-review",
+  "path_key": "code-review",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "skillssh",
+    "ref": "mattpocock/skills/code-review",
+    "subpath": "skills\\engineering\\code-review",
+    "branch": null
+  }
+}
