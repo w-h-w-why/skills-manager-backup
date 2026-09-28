@@ -1,0 +1,4 @@
+interface:
+  display_name: "Obsidian 个性化学习体系"
+  short_description: "通过诊断建立个性化课程，持续保存学习进度、复习证据与新想法"
+  default_prompt: "使用 $obsidian-learning 帮我明确学习目标、诊断基础，并在独立 Obsidian 仓库建立可持续学习的课程。"
