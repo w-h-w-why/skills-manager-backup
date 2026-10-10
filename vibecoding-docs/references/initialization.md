@@ -1,100 +1,92 @@
-# vibecoding-docs：项目文档初始化
+# 初始化与项目入口
 
-本文是 `vibecoding-docs` 的初始化参考。它规定首次建档时建立什么、何时写入，以及怎样让后续开发持续维护文档。
+只在用户要求初始化或明确安装维护入口时执行写入。接手项目发现上下文缺失但未要求建档时，读取现有材料并提出缺项，不自动安装规则。更新单文档和只读审计不触发初始化。
 
-## 适用范围
+1. 找现有 README、AGENTS/AGENT/CLAUDE、CONTEXT、任务入口、CHANGELOG、环境模板和 docs，沿用实际路径。
+2. 看项目清单、入口、配置和相关测试确认事实；不猜命令和历史。
+3. 依据 [文档职责](doc-contracts.md) 选档，有内容才建文件，不建空目录或占位文档。用 [模板目录](../assets/templates/) 中的相关结构，填充事实并裁掉无内容章节、未创建目标和生成说明。
+4. 优先在现有 AGENTS.md、AGENT.md 或 CLAUDE.md 中增补缺失执行约定，保留原命名与内容；仅在这些入口均不存在或用户明确指定新入口时，用 [AGENTS 模板](../assets/templates/AGENTS.template.md) 创建 AGENTS.md。已有多个入口时沿用实际主入口，其他入口引用已有维护约定，不重复安装；维护小节只留一个。
+5. 不复制 Skill 维护规则到项目。已有 doc-maintenance 若有项目特例可保留；若纯粹重复，在明确整理范围内将重复规则改为入口，不擅自删除用户原文。
+6. 为已创建文件生成真实可点击导航。多个主题文档时增加 docs/README；文件少时可由根 README 承担索引，参考 [导航规则](links.md)。
+7. 核对链接、定义和安全可验证命令，报告新建/沿用、待确认、实际验证。完成后重新执行应无重复维护章节或事件条目。
 
-当用户要求初始化项目文档、补齐文档体系、接手缺少上下文的项目，或项目第一次进入实质开发时使用。用户已经授权初始化时，直接执行，不把规模评估变成新的确认关卡；无法推断的信息用“待确认”标记，不编造事实。
+## 规模建议
 
-## 初始化顺序
+以下目录树是结构示例，标明按需的项不要求全量创建。生成项目导航时使用带真实链接的列表。
 
-1. 读取现有 `README*`、`AGENTS.md`/`AGENT.md`、`TODO*`、`CHANGELOG*`、`.env.example` 和 `docs/`，保留已有路径与命名。
-2. 从项目清单、配置和目录事实判断技术栈、入口、测试、环境变量与模块规模；不凭空写启动命令。
-3. 按下方档位选择文档树。只创建有实际内容的文件，不创建只有标题的空文档。
-4. 先读取目标文档再补写。已有文档做局部增补；已授权的整体重组按指令执行，无关的改名、合并、删除或大幅重排保持原样。
-5. 从 [维护流程](./maintenance.md) 复制内容到项目的 `docs/doc-maintenance.md`，把触发表的文档路径映射到已有主文档；例如已有根目录 CONTEXT.md 就沿用它。已有等价流程就地补齐，保持唯一入口。
-6. 维护文件存在后，再用 [维护小节模板](../assets/AGENTS-doc-maintenance.template.md) 增补根 AGENTS.md，适配项目路径且不覆盖既有内容。缺少 AGENTS.md 时新建精简入口；已有 AGENT.md、CLAUDE.md 等文件保留并必要时引用，不因此搬迁。
-7. 按 [链接与导航规则](./maintenance.md#链接与导航) 将真实文件引用、索引、目录导航和触发表改为 Markdown 链接；目录层级用可点击的缩进列表。下方规模树仅是结构示例，不作为生成文档的唯一导航。检查路径、锚点、命令是否真实有效；未创建文件明确标记，把无法安全运行的验证列为“未运行”。
-8. 报告新建、沿用、跳过、待确认和验证结果，说明后续写入时机。
-
-## 按规模选择文档树
-
-规模只决定初始范围，不限制之后按事件惰性创建文档。
-
-### 小型：原型、个人项目、单一模块
+### 小型
 
 ```text
-README.md
-AGENTS.md
-TODO.md
-CHANGELOG.md                 # 有用户可见版本变化时保留
-.env.example                 # 有环境变量时保留
-docs/
-├── context.md               # 有业务规则或术语时保留
-├── architecture.md          # 有多个模块时保留，否则并入 README
-├── testing.md               # 有测试或验收步骤时保留
-└── doc-maintenance.md
+project/
+├── README.md
+├── AGENTS.md
+├── TODO.md                  # 或已有任务入口
+├── CONTEXT.md               # 按已有职责和实际需求保留
+├── CHANGELOG.md             # 有用户可见变化时
+├── .env.example             # 有环境变量时
+└── docs/                    # 有独立主题内容才创建
+    ├── README.md            # 多个主题文档时创建索引
+    ├── architecture.md      # 简短说明可并入根 README
+    └── testing.md           # 有测试或验收步骤时
 ```
 
-### 中型：多模块、持续迭代、需要交接
+### 中型
 
 ```text
-README.md
-AGENTS.md
-TODO.md
-CHANGELOG.md
-.env.example
-docs/
-├── prd.md
-├── context.md
-├── architecture.md
-├── data-model.md            # 存在持久化数据时
-├── api.md                   # 对外或跨模块接口存在时
-├── testing.md
-├── setup.md
-├── glossary.md
-├── doc-maintenance.md
-├── adr/
-└── notes/
-    ├── progress.md
-    └── known-issues.md
+project/
+├── README.md
+├── AGENTS.md
+├── CONTEXT.md
+├── TODO.md
+├── CHANGELOG.md
+├── .env.example
+└── docs/
+    ├── README.md
+    ├── prd.md
+    ├── architecture.md
+    ├── data-model.md        # 有持久化或复杂模型时
+    ├── api.md               # 有接口时；优先现有机器契约
+    ├── testing.md
+    ├── setup.md
+    ├── glossary.md          # 术语确有独立价值时
+    ├── adr/                # 确认重要决策时
+    └── notes/              # 有实际交接或已知问题时
+        ├── progress.md
+        └── known-issues.md
 ```
 
-### 长期：多人协作、生产部署、对外服务
+### 长期维护或多人协作
 
 ```text
-README.md
-AGENTS.md
-TODO.md
-CHANGELOG.md
-.env.example
-CONTRIBUTING.md              # 有人类贡献流程时
-LICENSE                      # 按已确定授权创建，不擅自选协议
-docs/
-├── prd.md
-├── context.md
-├── architecture.md
-├── data-model.md
-├── api.md
-├── testing.md
-├── setup.md
-├── deployment.md          # 有部署流程时
-├── glossary.md
-├── security.md            # 有认证、权限或敏感数据时
-├── operations.md          # 有监控、备份或值班要求时
-├── doc-maintenance.md
-├── adr/
-└── notes/
+project/
+├── README.md
+├── AGENTS.md
+├── CONTEXT.md
+├── TODO.md
+├── CHANGELOG.md
+├── .env.example
+├── CONTRIBUTING.md          # 有协作要求时
+├── LICENSE                  # 仅在权利人指定许可证后
+└── docs/
+    ├── README.md
+    ├── prd.md
+    ├── architecture.md
+    ├── data-model.md
+    ├── api.md
+    ├── testing.md
+    ├── setup.md
+    ├── glossary.md
+    ├── deployment.md        # 有部署流程时
+    ├── security.md          # 有权限/敏感数据约束时
+    ├── operations.md        # 有运维要求时
+    ├── adr/
+    └── notes/
+        ├── progress.md
+        └── known-issues.md
 ```
 
-`context.md` 用于业务规则和领域语义；它不是架构决策记录。`CONTRIBUTING.md`、`LICENSE`、`security.md`、`operations.md` 均按实际需要创建，不为凑结构留空文件。
+CONTEXT 可能是现有会话总览，也可能是业务上下文，先读再沿用。根 CONTEXT 若承载业务规则，就不再建立同职责的 docs/context；若总览之外需要独立业务文档，可按实际需要创建并链接。新建会话入口主要链接目标、现状与任务来源，避免复制完整技术栈、进度与待办。
 
-## 初始化完成条件
+## 完成条件
 
-- 根入口能链接到实际存在的主要文档。
-- `AGENTS.md` 已包含每次代码修改后的巡检和冲突上报规则。
-- `docs/doc-maintenance.md` 已明确初始化、任务开始、代码批次完成、验证完成、交付前的写入时机。
-- 已有用户改动未被覆盖，工作树差异可解释。
-- 未把代码违反规范的事实默默改写成新规范；此类冲突进入待裁决报告。
-
-详细职责边界见 [doc-contracts.md](./doc-contracts.md)，持续维护和写入时机见 [maintenance.md](./maintenance.md)。
+已存在文档入口可达；AGENTS 维护小节至多一份；没有复制完整维护规则；未知事实待确认；用户原有内容保留；规范冲突已提出；初始化重复执行不会产生新增重复条目。

@@ -1,0 +1,194 @@
+{
+  "schema_version": 2,
+  "cases": [
+    {
+      "id": "single-document",
+      "request": "仅更新 docs/setup.md，使其与当前配置的端口一致。",
+      "before": {
+        "settings.json": "{\"port\":8080}\n",
+        "docs/setup.md": "# 启动\n默认端口为3000。\n"
+      },
+      "working_changes": {},
+      "expect": {
+        "changed": [
+          "docs/setup.md"
+        ],
+        "forbidden_created": [
+          "AGENTS.md",
+          "docs/doc-maintenance.md"
+        ],
+        "contains": {
+          "docs/setup.md": ["8080"]
+        }
+      }
+    },
+    {
+      "id": "comments-only",
+      "request": "本任务仅调整源码注释；结束前巡检，必要时更新文档。",
+      "before": {
+        "app.py": "# 为示例保留最短入口。\nPORT = 8080\n",
+        "README.md": "# 应用\n默认端口8080。\n"
+      },
+      "working_changes": {
+        "app.py": "# 示例入口使用固定本地端口，避免环境依赖。\nPORT = 8080\n"
+      },
+      "expect": {
+        "unchanged": [
+          "README.md"
+        ],
+        "forbidden_created": [
+          "AGENTS.md",
+          "CHANGELOG.md",
+          "docs/doc-maintenance.md"
+        ],
+        "report": [
+          "检查后无需文档更新"
+        ]
+      }
+    },
+    {
+      "id": "committed-interface",
+      "request": "本任务已提交响应字段 id 改名为 order_id，当前工作树干净；收尾核对文档。",
+      "before": {
+        "api.py": "def order_response(order_id):\n    \"\"\"返回订单标识；无外部依赖，用于验证响应契约。\"\"\"\n    return {\"id\": order_id}\n",
+        "docs/api.md": "# 查询订单\n响应字段：id。\n"
+      },
+      "working_changes": {
+        "api.py": "def order_response(order_id):\n    \"\"\"返回订单标识；无外部依赖，用于验证响应契约。\"\"\"\n    return {\"order_id\": order_id}\n"
+      },
+      "setup": {
+        "git": {
+          "baseline_commit": true,
+          "record_start_sha": true,
+          "commit_working_changes": true,
+          "require_clean_worktree_before_task_end": true
+        }
+      },
+      "expect": {
+        "changed": [
+          "docs/api.md"
+        ],
+        "contains": {
+          "docs/api.md": ["order_id"]
+        },
+        "report": [
+          "核对任务期间已提交变更"
+        ]
+      }
+    },
+    {
+      "id": "constraint-conflict",
+      "request": "准备交付本次订单修改，请检查与文档一致性。",
+      "before": {
+        "CONTEXT.md": "# 订单规则\n已支付订单不得取消。\n",
+        "order.py": "def can_cancel(status):\n    \"\"\"已支付订单保留支付约束，仅未支付订单允许取消。\"\"\"\n    return status == 'unpaid'\n"
+      },
+      "working_changes": {
+        "order.py": "def can_cancel(status):\n    \"\"\"当前实现允许未支付和已支付状态取消。\"\"\"\n    return status in ('unpaid', 'paid')\n"
+      },
+      "expect": {
+        "unchanged": [
+          "CONTEXT.md"
+        ],
+        "report": [
+          "规则冲突",
+          "原文与实现位置",
+          "待裁决"
+        ],
+        "forbidden_claims": [
+          "已完成并通过"
+        ]
+      }
+    },
+    {
+      "id": "initialize-small",
+      "request": "初始化这个小项目的文档，并安装任务收尾维护入口。",
+      "before": {
+        "README.md": "# 本地工具\n用户备注：保留当前命名。\n",
+        "CONTEXT.md": "# 会话入口\n项目定位见[README](README.md)。\n"
+      },
+      "working_changes": {},
+      "expect": {
+        "created": [
+          "AGENTS.md"
+        ],
+        "preserve": [
+          "用户备注：保留当前命名。"
+        ],
+        "forbidden_created": [
+          "docs/doc-maintenance.md"
+        ],
+        "heading_count": {
+          "AGENTS.md": {
+            "文档维护": 1
+          }
+        },
+        "repeat": "no-new-differences"
+      }
+    },
+    {
+      "id": "initialize-existing-entry",
+      "request": "初始化项目文档并安装任务收尾维护入口；项目已有 CLAUDE.md，请沿用当前命名。",
+      "before": {
+        "README.md": "# 本地工具\n",
+        "CLAUDE.md": "# 项目入口\n用户规则：保留当前命名。\n"
+      },
+      "working_changes": {},
+      "expect": {
+        "changed": ["CLAUDE.md"],
+        "preserve": ["用户规则：保留当前命名。"],
+        "forbidden_created": ["AGENTS.md", "AGENT.md", "docs/doc-maintenance.md"],
+        "heading_count": {
+          "CLAUDE.md": {"文档维护": 1}
+        },
+        "repeat": "no-new-differences"
+      }
+    },
+    {
+      "id": "adr-number",
+      "request": "已确认从内存存储改为SQLite，请记录决策；实施尚未开始。",
+      "before": {
+        "docs/adr/0001-storage.md": "# 0001 内存\n状态：已采纳。\n",
+        "docs/adr/0007-cache.md": "# 0007 缓存\n状态：已采纳。\n"
+      },
+      "working_changes": {},
+      "expect": {
+        "new_adr_prefix": "0008-",
+        "preserve": [],
+        "report": [
+          "已采纳，尚未实施"
+        ],
+        "forbidden_claims": [
+          "已经实现SQLite"
+        ],
+        "unchanged": [
+          "docs/adr/0007-cache.md"
+        ]
+      }
+    },
+    {
+      "id": "move-navigation",
+      "request": "本任务将docs/setup.md移到docs/guides/setup.md；结束前修复导航。",
+      "before": {
+        "README.md": "# 项目\n[安装](docs/setup.md)\n",
+        "docs/README.md": "# 文档\n[安装](setup.md)\n",
+        "docs/setup.md": "# 安装\n"
+      },
+      "working_changes": {
+        "docs/setup.md": null,
+        "docs/guides/setup.md": "# 安装\n"
+      },
+      "expect": {
+        "changed": [
+          "README.md",
+          "docs/README.md"
+        ],
+        "links_exist": true,
+        "old_targets_absent": [
+          "docs/setup.md",
+          "setup.md"
+        ]
+      }
+    }
+  ]
+}

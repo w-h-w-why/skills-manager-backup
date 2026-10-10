@@ -1,7 +1,6 @@
 interface:
   display_name: "vibecoding-docs"
-  short_description: "初始化并持续同步项目文档，明确写入时机与开发中的冲突处理规则"
-  default_prompt: "使用 $vibecoding-docs 初始化或更新当前项目文档，并将代码修改后的自动巡检、同步写入和冲突上报规则纳入项目 AGENTS.md。"
-
+  short_description: "初始化项目文档，在任务收尾按影响同步，冲突与重要决策即时处理"
+  default_prompt: "使用 $vibecoding-docs 在当前任务结束前巡检并同步受影响文档；按需读取细则。"
 policy:
   allow_implicit_invocation: true
