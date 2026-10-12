@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
   "scenario_id": "a6494bd5-99ce-4a49-8c15-37aab74c4644",
-  "name": "Default",
-  "description": "Default startup scenario",
-  "icon": null,
+  "name": "必装",
+  "description": "必须安装",
+  "icon": "target",
   "sort_order": 0
 }
