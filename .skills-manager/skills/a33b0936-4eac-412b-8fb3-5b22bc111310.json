@@ -1,0 +1,14 @@
+{
+  "schema_version": 1,
+  "skill_id": "a33b0936-4eac-412b-8fb3-5b22bc111310",
+  "path": "code-comments",
+  "path_key": "code-comments",
+  "enabled": true,
+  "tags": [],
+  "source": {
+    "type": "import",
+    "ref": null,
+    "subpath": null,
+    "branch": null
+  }
+}
