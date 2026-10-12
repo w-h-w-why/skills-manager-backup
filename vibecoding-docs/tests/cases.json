@@ -167,6 +167,64 @@
       }
     },
     {
+      "id": "group-by-topic",
+      "request": "仅整理项目文档目录：docs 文档已较多，请按职责和主题分文件夹，并更新相关索引与文件引用；保留原有事实，不安装项目维护入口。",
+      "before": {
+        "settings.json": "{\"port\":8080}\n",
+        "README.md": "# 工具\n用户说明：仅在本地使用。\n[文档](docs/README.md)；[安装](docs/setup.md)。\n",
+        "docs/README.md": "# 文档\n[架构](architecture.md)\n[数据模型](data-model.md)\n[安装](setup.md)\n[部署](deployment.md)\n[测试](testing.md)\n[接口](api.md)\n",
+        "docs/architecture.md": "# 架构\n单进程工具。\n模型见[数据模型](data-model.md)。\n",
+        "docs/data-model.md": "# 数据模型\n订单标识为字符串。\n",
+        "docs/setup.md": "# 安装\n默认端口8080。\n配置见[settings.json](../settings.json)。\n",
+        "docs/deployment.md": "# 部署\n仅本地运行，不接入外部服务。\n先完成[安装](setup.md)。\n",
+        "docs/testing.md": "# 测试\n测试入口：python -m unittest。\n",
+        "docs/api.md": "# 接口\n响应字段：order_id。\n"
+      },
+      "working_changes": {},
+      "expect": {
+        "changed": ["README.md", "docs/README.md"],
+        "created": [
+          "docs/architecture/README.md", "docs/architecture/architecture.md", "docs/architecture/data-model.md",
+          "docs/operations/README.md", "docs/operations/setup.md", "docs/operations/deployment.md",
+          "docs/delivery/testing.md", "docs/interfaces/api.md"
+        ],
+        "removed": ["docs/architecture.md", "docs/data-model.md", "docs/setup.md", "docs/deployment.md", "docs/testing.md", "docs/api.md"],
+        "unchanged": ["settings.json"],
+        "preserve": ["用户说明：仅在本地使用。"],
+        "contains": {
+          "docs/architecture/architecture.md": ["单进程工具。"],
+          "docs/architecture/data-model.md": ["订单标识为字符串。"],
+          "docs/operations/setup.md": ["默认端口8080。", "../../settings.json"],
+          "docs/operations/deployment.md": ["仅本地运行，不接入外部服务。"],
+          "docs/delivery/testing.md": ["python -m unittest"],
+          "docs/interfaces/api.md": ["order_id"]
+        },
+        "forbidden_created": ["AGENTS.md", "docs/doc-maintenance.md"],
+        "links_exist": true,
+        "navigation": "root index reaches each topic index and every topic document",
+        "repeat": "no-new-differences"
+      }
+    },
+    {
+      "id": "themed-document-update",
+      "request": "仅更新 docs/operations/setup.md，使端口说明与当前配置一致；沿用现有主题目录。",
+      "before": {
+        "settings.json": "{\"port\":8080}\n",
+        "docs/README.md": "# 文档\n[运行](operations/README.md)\n",
+        "docs/operations/README.md": "# 运行\n[安装](setup.md)\n[部署](deployment.md)\n",
+        "docs/operations/setup.md": "# 安装\n默认端口3000。\n配置见[settings.json](../../settings.json)。\n",
+        "docs/operations/deployment.md": "# 部署\n仅在本地运行。\n"
+      },
+      "working_changes": {},
+      "expect": {
+        "changed": ["docs/operations/setup.md"],
+        "unchanged": ["settings.json", "docs/README.md", "docs/operations/README.md", "docs/operations/deployment.md"],
+        "contains": {"docs/operations/setup.md": ["8080", "../../settings.json"]},
+        "forbidden_created": ["docs/setup.md", "AGENTS.md", "docs/doc-maintenance.md"],
+        "links_exist": true
+      }
+    },
+    {
       "id": "move-navigation",
       "request": "本任务将docs/setup.md移到docs/guides/setup.md；结束前修复导航。",
       "before": {
@@ -185,8 +243,7 @@
         ],
         "links_exist": true,
         "old_targets_absent": [
-          "docs/setup.md",
-          "setup.md"
+          "docs/setup.md"
         ]
       }
     }

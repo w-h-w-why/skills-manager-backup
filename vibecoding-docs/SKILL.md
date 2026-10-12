@@ -1,9 +1,9 @@
 ---
 name: vibecoding-docs
 description: >
-  初始化和维护项目文档；在一次开发任务的交付、提交或交接前执行轻量巡检，按命中事件同步相关文档；开发中发现明确规则冲突即报告，重要决策确认即记录。用于项目建档、任务收尾、文档更新和按范围审计。
+  初始化和维护项目文档；按职责和主题目录组织文档，在一次开发任务的交付、提交或交接前执行轻量巡检，按命中事件同步相关文档；开发中发现明确规则冲突即报告，重要决策确认即记录。用于项目建档、任务收尾、文档更新和按范围审计。
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   author: "not-specified"
   license: "not-specified"
 ---
@@ -22,18 +22,18 @@ metadata:
 2. 对照当前实现，读取本次受影响的文档；纯格式或注释变化若未改变文档事实，可免写。
 3. 用下表定位主文档。命中普通事件才读 [写入细则](references/maintenance.md)，重要决策读 [ADR 规则](references/adr.md)。
 4. 实现说明过期直接更新；明确约束冲突保留规则、即时报告证据，只暂停依赖裁决的工作。
-5. 核对新增或改变的路径、链接和命令定义；检查改名文件的入链；相同事件更新已有条目。
+5. 核对新增或改变的路径、主题目录归属、链接和命令定义；检查改名文件的入链；相同事件更新已有条目。
 6. 必要验证满足验收后再标记完成；交付说明更新结果、实际验证与待确认项。无变化就说明已巡检、无需更新。
 
 | 变化 | 优先主文档（示例名称，沿用项目已有路径） |
 | --- | --- |
-| 目标、范围、验收 | PRD |
+| 目标、范围、验收 | `docs/product/prd.md` 或已有 PRD |
 | 业务语义、权限、状态规则 | 已有 CONTEXT 或领域文档；含义不同则保持原职责 |
-| 模块边界、依赖 | architecture；重要决策另写 ADR |
-| 数据、接口 | data-model、API 或现有机器契约 |
-| 环境、安装、运行 | .env.example、setup、README |
-| 测试方式、CI | testing |
-| 用户可见行为、完成与交接 | CHANGELOG、TODO、progress，按各自职责写 |
+| 模块边界、依赖 | `docs/architecture/architecture.md`；重要决策另写 ADR |
+| 数据、接口 | `docs/architecture/data-model.md`、`docs/interfaces/api.md` 或现有机器契约 |
+| 环境、安装、运行 | `docs/operations/setup.md`、`.env.example`、README |
+| 测试方式、CI | `docs/delivery/testing.md` |
+| 用户可见行为、完成与交接 | CHANGELOG、TODO、`docs/delivery/` 或 `docs/notes/`，按各自职责写 |
 | 文件引用、目录导航、死链 | [链接规范](references/links.md) |
 
 ## 即时事件
@@ -46,9 +46,14 @@ metadata:
 
 - 明确要求初始化或安装项目维护入口：读 [初始化](references/initialization.md)，局部补齐，不重写已有内容。
 - 更新单份文档：只读取相关文件及必要细则，不安装 AGENTS 小节或新增维护目录。
+- 整理文档目录：读 [文档职责](references/doc-contracts.md) 和 [链接规范](references/links.md)，按用户指定范围迁移正文并同步各级索引。
 - 只查链接：读 [链接规范](references/links.md)，执行链接检查，无需加载职责表或业务规则。
 - 不确定信息归属：读 [文档职责](references/doc-contracts.md)。
 - 全面审计：按用户要求的范围逐项读取；只要求审计时不写文件。
+
+## 职责目录与主题拆分
+
+文档较多时按职责划分主题文件夹，同主题再按业务或组件拆分，具体归属见 [文档职责](references/doc-contracts.md)，规模示例见 [初始化](references/initialization.md)。新文档放到已有对应主题目录；既有文件在用户要求整理目录时再移动。每份正文保留一处，根索引与主题索引通过 Markdown 链接导航。
 
 ## 项目入口与维护来源
 
@@ -62,4 +67,4 @@ metadata:
 
 只执行范围内安全且已授权的验证；实跑、静态核对、失败和未执行分开报告。文档任务发现代码问题时记录证据，不扩大为代码改造。
 
-生成对应文档时，按需读取 [模板目录](assets/templates/) 并裁剪占位内容；使用模板结构，不能把示例当事实。回归场景与观察标准见 [测试说明](tests/README.md)。当前版本为 1.1.0；作者与许可证待权利人指定，不推断作者或选择授权协议。
+生成对应文档时，按需读取 [模板目录](assets/templates/) 并裁剪占位内容；使用模板结构，不能把示例当事实。回归场景与观察标准见 [测试说明](tests/README.md)。当前版本为 1.2.0；作者与许可证待权利人指定，不推断作者或选择授权协议。

@@ -1,8 +1,8 @@
 """Check observable fixture results without pretending to grade Agent reasoning.
 
 The program reads a completed isolated case. It never edits the result directory.
-Exact file preservation, unwanted installation, ADR numbering, and duplicate
-headings are deterministic checks; intent, immediate conflict reporting, and
+Exact file preservation, completed moves, unwanted installation, ADR numbering,
+and duplicate headings are deterministic checks; intent, immediate conflict reporting, and
 semantic correctness still require the rubric in cases.json.
 """
 
@@ -35,6 +35,9 @@ def verify_structural(case: dict[str, Any], actual: dict[str, str]) -> list[str]
     for path in expect.get("created", []):
         if path not in actual:
             failures.append(f"Required file missing: {path}")
+    for path in expect.get("removed", []):
+        if path in actual:
+            failures.append(f"Old file remains after requested move: {path}")
     for path in expect.get("forbidden_created", []):
         if path not in before and path in actual:
             failures.append(f"Unrequested installation: {path}")
